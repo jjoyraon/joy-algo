@@ -48,7 +48,7 @@ public class source {
 		}
 		nList = new ArrayList<>();
 		for(int i=0; i<=G; i++){
-			nList.add(new ArrayList<>());
+			nList.add(new ArrayList<Integer>());
 		}
 		for(int i=1; i<=M; i++){
 			for(int j=1; j<=N; j++){
