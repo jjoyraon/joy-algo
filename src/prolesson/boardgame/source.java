@@ -15,14 +15,18 @@ public class source {
 
 	public static void main(String[] args) throws Exception {
 		System.setIn(new FileInputStream("src/prolesson/boardgame/input.txt"));
-		Scanner sc = new Scanner(System.in);
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		int N = Integer.parseInt(br.readLine());
-		String[] cards = br.readLine().split(" ");
+		String[] cards = new String[N+1];
+		String[] cardSplit = br.readLine().split(" ");
+		for(int i=1; i<=N; i++){
+			cards[i] = cardSplit[i-1];
+		}
 
-		int M = sc.nextInt();
-		int K = sc.nextInt();
+		String[] mk = br.readLine().split(" ");
+		int M =  Integer.parseInt(mk[0]);
+		int K = Integer.parseInt(mk[1]);
 		List<List<Node>> nlist = new ArrayList<>();
 		for(int i=0; i<=M; i++){
 			nlist.add(new ArrayList<Node>());
@@ -36,14 +40,32 @@ public class source {
 			nlist.get(to).add(new Node(from, c));
 		}
 		
-		int[][] dy = new int[M+1][N+1];
-		for(int i=1; i<=M; i++){
-			for(int j=1; j<=N; j++){
-				
+		int[][] dy = new int[N+1][M+1];
+		
+		for(int i=0; i<=N; i++){
+			for(int j=1; j<=M; j++){
+				dy[i][j] = -98765;
 			}
 		}
-		
-		
+		dy[0][1] = 0;
+		for(int i=1; i<=N; i++){
+			for(int j=1; j<=M; j++){
+				if(dy[i-1][j] >=0){ // 현재 위치가 이미 확인되었을 경우에 다음 경로를 계산
+					for(Node n : nlist.get(j)){
+						int p = dy[i-1][j];
+						if(n.card.equals(cards[i])){
+							p += 1;
+						}
+						dy[i][n.num] = Math.max(p, dy[i][n.num]);
+					}				
+				}
+			}
+		}
+		int max = 0;
+		for(int i=1; i<=M; i++){
+			max = Math.max(max, dy[N][i]);
+		}
+		System.out.println(max*10);
 	}
 }
 
