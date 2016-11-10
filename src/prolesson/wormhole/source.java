@@ -49,14 +49,16 @@ public class source {
 			for(int i=0; i<=N; i++){
 				dist[i] = INF;
 			}
-			
+			dist[1] = 0;
 			boolean hasCycle = false;
 			for(int i=1; i<=N; i++){
 				for(int j=1; j<=N; j++){
 					for(Node node : nlist.get(j)){
-						if(dist[j] != INF && dist[node.e] > dist[j] + node.cost){
-							dist[node.e] = dist[j] + node.cost;
-							
+						int next = node.e;
+						int cost = node.cost;
+						
+						if(dist[j] != INF && dist[next] > dist[j] + cost){
+							dist[next] = dist[j] + cost;
 							if(i==N){
 								hasCycle = true;
 							}
