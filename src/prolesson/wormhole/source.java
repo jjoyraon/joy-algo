@@ -49,7 +49,7 @@ public class source {
 			for(int i=0; i<=N; i++){
 				dist[i] = INF;
 			}
-			dist[1] = 0;
+			dist[1] = 0;  // 시작점 거리를 입력
 			boolean hasCycle = false;
 			for(int i=1; i<=N; i++){
 				for(int j=1; j<=N; j++){
@@ -59,7 +59,7 @@ public class source {
 						
 						if(dist[j] != INF && dist[next] > dist[j] + cost){
 							dist[next] = dist[j] + cost;
-							if(i==N){
+							if(i==N){ // N-1번을 하고도 다시 거리가 줄어든다면 싸이클이 존재하는 것
 								hasCycle = true;
 							}
 						}
