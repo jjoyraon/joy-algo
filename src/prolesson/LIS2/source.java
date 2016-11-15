@@ -37,18 +37,25 @@ public class source {
 		tree = new int[N*3];
 		leafIndex = B;
 		
-		int[] dy = new int[N+1];
+		int[] path = new int[N+1];
+		int pi = 0;
 		int max = 0;
 		for(int i=0; i<N; i++){
 			Num num = numArr[i];
 			int prevMax = select(1, num.index-1);
 			update(num.index, prevMax + 1);
-			dy[num.index] = prevMax + 1;
+			if(pi>0 && path[pi-1]!=num.num){
+				path[pi++] = num.num;
+			}else if(pi==0){
+				path[pi++] = num.num;
+			}
 			max = Math.max(max, prevMax + 1);
 		}
 		System.out.println(String.format("%d", max));
 		
-		
+//		for(int i=0; i<pi; i++){
+//			System.out.print(path[i] + " ");
+//		}
 	}
 
 	private static void update(int index, int newValue) {
