@@ -1,10 +1,9 @@
 package prolesson.LIS2;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
 
 /*
  * LIS2 
@@ -19,13 +18,14 @@ public class source {
 
 	public static void main(String[] args) throws Exception {
 		System.setIn(new FileInputStream("src/prolesson/LIS2/input.txt"));
-		Scanner sc = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		N = sc.nextInt();
+		N = Integer.parseInt(br.readLine());
 		Num[] numArr = new Num[N];
 		arr = new int[N+1];
+		String[] split = br.readLine().split(" ");
 		for(int i=1; i<=N; i++){
-			arr[i] = sc.nextInt();
+			arr[i] = Integer.parseInt(split[i-1]);
 			numArr[i-1] = new Num(arr[i], i);
 		}
 		
@@ -38,14 +38,15 @@ public class source {
 		leafIndex = B;
 		
 		int[] dy = new int[N+1];
+		int max = 0;
 		for(int i=0; i<N; i++){
 			Num num = numArr[i];
-			int maxIndex = select(1, num.index-1);
-			dy[num.index] = maxIndex + 1;
-			update(num.index, maxIndex+1);
+			int prevMax = select(1, num.index-1);
+			update(num.index, prevMax + 1);
+			dy[num.index] = prevMax + 1;
+			max = Math.max(max, prevMax + 1);
 		}
-		
-		System.out.println(String.format("%d", dy[N]));
+		System.out.println(String.format("%d", max));
 		
 		
 	}
@@ -58,11 +59,7 @@ public class source {
 		while(next>0){
 			int l = tree[2*next];
 			int r = tree[2*next+1];
-			if(arr[l]>=arr[r]){
-				tree[next] = l;
-			}else{
-				tree[next] = r;
-			}
+			tree[next] = Math.max(l, r);
 			next = next/2;
 		}
 	}
@@ -70,24 +67,20 @@ public class source {
 	private static int select(int from, int to){
 		int l = leafIndex + from - 1;
 		int r = leafIndex + to - 1;
-		int maxIndex = 0;
+		int max = 0;
 		while(l<=r){
 			if(l%2==1){
-				if(arr[maxIndex] < arr[tree[l]]){
-					maxIndex = tree[l];
-				}
+				max = Math.max(max, tree[l]); 
 				l++;
 			}
-			if(r%1==0){
-				if(arr[maxIndex] < arr[tree[r]]){
-					maxIndex = tree[r];
-				}
+			if(r%2==0){
+				max = Math.max(max, tree[r]);
 				r--;
 			}
 			l = l/2;
 			r = r/2;
 		}
-		return maxIndex;
+		return max;
 	}
 }
 
