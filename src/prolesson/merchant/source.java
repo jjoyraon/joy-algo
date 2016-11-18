@@ -23,10 +23,10 @@ public class source {
 		depth = new int[N+1];
 		parent = new int[N+1][18];
 		nlist = new ArrayList<>();
-		for(int i=0; i<=N; i++){
-			nlist.add(new ArrayList<Integer>());
-		}
-		for(int i=0; i<N-1; i++){
+		
+		for(int i=0; i<=N; i++)	nlist.add(new ArrayList<Integer>());
+		
+		for(int i=1; i<N; i++){
 			String[] ab = br.readLine().split(" ");
 			int a = Integer.parseInt(ab[0]);
 			int b = Integer.parseInt(ab[1]);
@@ -36,15 +36,15 @@ public class source {
 		
 		parent[1][0] = 1;
 		dfs(1);
-		for(int i=1; i<=17; i++){
+		for(int i=1; i<17; i++){
 			for(int j=1; j<=N; j++){
 				parent[j][i] = parent[parent[j][i-1]][i-1];
 			}
 		}
 		long res = 0;
-		for(int i=2; i<=N; i++){
-			int lca = lca(i-1, i);
-			int cost = depth[i-1] + depth[i] - (depth[lca]*2);
+		for(int i=1; i<N; i++){
+			int lca = lca(i, i+1);
+			int cost = depth[i] + depth[i+1] - (depth[lca]*2);
 			res += cost;
 		}
 		
@@ -52,10 +52,10 @@ public class source {
 	}
 	
 	private static int lca(int a, int b){
-		int up = 0;
-		int stay = 0;
+		int up = a;
+		int stay = b;
 		if(depth[a]!=depth[b]){
-			if(depth[a]>depth[b]){
+			if(depth[a] < depth[b]){
 				up = b;
 				stay = a;
 			}else{
@@ -63,7 +63,7 @@ public class source {
 				stay = b;
 			}
 			for(int i=17; i>=0; i--){
-				if(depth[stay] - (i<<1)> depth[up]){
+				if(depth[stay]  <= depth[up] - (1<<i)){
 					up = parent[up][i];
 				}
 			}
