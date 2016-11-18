@@ -46,9 +46,14 @@ public class source {
 				parent[j][i] = parent[parent[j][i-1]][i-1];
 			}
 		}
-		int res = lca(A, B);
+		int lca = lca(A, B);
+		if(lca==0){
+			System.out.println("-1");
+		}else{
+			int res = dep[A] + dep[B] - (dep[lca]*2);
+			System.out.println(res);
+		}
 		
-		System.out.println(res);
 	}
 	
 
