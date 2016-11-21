@@ -19,6 +19,23 @@ public class LowerBound {
 
 	}
 
+
+	private int lowerBound(int[] arr, int k) {
+		int s = 0;
+		int e = arr.length-1;
+		int m = 0;
+		while(s<e){
+			m = (s+e)/2;
+			if(arr[m]<k){
+				s = m+1;
+			}else{
+				e = m;
+			}
+		}
+		return e;
+	}
+
+
 	/*
 	 * 찾고자 하는 값보다 큰 값이 처음으로 나타나는 위치
 	 */
@@ -32,35 +49,25 @@ public class LowerBound {
 
 	}
 
-	private int lowerBound(int[] arr, int k) {
-		int s = 0;
-		int e = arr.length - 1;
-		int m = 0;
-
-		while (s < e) {
-			m = (s + e) / 2;
-			if (arr[m] < k) {
-				s = m + 1;
-			} else {
-				e = m;
-			}
-		}
-		return e;
-	}
 
 	private int upperBound(int[] arr, int k) {
 		int s = 0;
-		int e = arr.length - 1;
+		int e = arr.length-1;
 		int m = 0;
-
-		while (s < e) {
-			m = (s + e) / 2;
-			if (arr[m] <= k) {
-				s = m + 1;
-			} else {
+		
+		while(s<e){
+			m = (s+e)/2;
+			if(arr[m]<=k){
+				s = m+1;
+			}else{
 				e = m;
 			}
 		}
+				
 		return e;
 	}
+
+	
+
+
 }

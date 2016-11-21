@@ -11,6 +11,7 @@ public class Solution {
 
 	private static ArrayList<ArrayList<Node>> nlist;
 	private static int M;
+	private static double ans;
 
 	public static void main(String[] args) throws Exception {
 		System.setIn(new FileInputStream("src/exercise/pretest/input.txt"));
@@ -35,47 +36,57 @@ public class Solution {
 				double pos = Double.parseDouble(split[2]);
 				nlist.get(from).add(new Node(from, to, pos));
 			}
-			double[][] mdy = new double[M+1][N+1];
-			double[][] wdy = new double[M+1][N+1];
+			double[][] mdy = new double[M+2][N+1];
+			double[][] wdy = new double[M+2][N+1];
 			
 			bfs(mdy, 1);
 			bfs(wdy, N);
 			
-			double ans = 0;
+			ans = 0;
+			dfs(mdy, wdy, 1, 1);
 			
-			boolean[][] noNeedToCheck = new boolean[M+1][N+1];
-			for(int i=1; i<=M; i++){
-				for(int j=1; j<=N; j++){
-					if(mdy[i][j]>0d && wdy[i][j]>0d){
-						double thisCase = mdy[i][j] * wdy[i][j];
-						ans += thisCase;
-					}
-				}
-			}
 			System.out.println(String.format("#%d %f", test_case, ans));
 		}
 		
 	}
 	
+	private static void dfs(double[][] mdy, double[][] wdy, int day, int num){
+		if(day>M){
+			return;
+		}
+		if(mdy[day][num]>0d && wdy[day][num]>0d){
+			ans += (mdy[day][num] * wdy[day][num]);
+			return;
+		}
+		for(Node n : nlist.get(num)){
+			dfs(mdy, wdy, day+1, n.next);
+		}
+	}
 	
 	private static void bfs(double[][] dy, int num){
-		Queue<Integer> q = new LinkedList<Integer>();
-		q.offer(num);
-		int day = 1;
-		dy[day][num] = 1d;
+		Queue<Trip> q = new LinkedList<Trip>();
+		q.offer(new Trip(num, 1));
+		dy[1][num] = 1d;
 		while(!q.isEmpty()){
-			if(day>=M){
+			Trip poll = q.poll();
+			if(poll.day>M){
 				break;
 			}
-			Integer poll = q.poll();
-			for(Node node : nlist.get(poll)){
-				dy[day+1][node.next] = dy[day][poll] * node.pos;
-				q.offer(node.next);
+			for(Node node : nlist.get(poll.num)){
+				dy[poll.day+1][node.next] = dy[poll.day][poll.num] * node.pos;
+				q.offer(new Trip(node.next, poll.day+1));
 			}
-			day++;
 		}
 	}
 		
+}
+class Trip{
+	int num;
+	int day;
+	public Trip(int num, int day) {
+		this.num = num;
+		this.day = day;
+	}
 }
 
 class Node{

@@ -19,13 +19,14 @@ public class QuickSort {
 		assertEquals(arr[last], 100);
 	}
 
-	public static void sort(int[] arr, int start, int end) {
-		int l = start;
-		int r = end;
-		int mid = arr[(l+r)/2];
+	private void sort(int[] arr, int left, int right) {
+
+		int l = left;
+		int r = right;
+		int pivot = arr[l + (r-l)/2];
 		while(l<r){
-			while(arr[l]<mid) l++;
-			while(arr[r]>mid) r--;
+			while(arr[l]<pivot) l++;
+			while(arr[r]>pivot) r--;
 			if(l<=r){
 				int t = arr[l];
 				arr[l] = arr[r];
@@ -34,10 +35,10 @@ public class QuickSort {
 				r--;
 			}
 		}
-		
-		if(start < r) sort(arr, start, r);
-		if(end > l) sort(arr, l, end);
-
+		if(left<r) sort(arr, left, r);
+		if(right>l) sort(arr, l, right);
 	}
+
+	
 
 }
