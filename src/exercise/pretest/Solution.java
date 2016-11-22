@@ -5,13 +5,17 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class Solution {
 
 	private static ArrayList<ArrayList<Node>> nlist;
+	private static ArrayList<ArrayList<Trip>> ellyList;
+	private static ArrayList<ArrayList<Trip>> noahList;
 	private static int M;
 	private static double ans;
+	private static int N;
+	private static double[][] elly;
+	private static double[][] noah;
 
 	public static void main(String[] args) throws Exception {
 		System.setIn(new FileInputStream("src/exercise/pretest/input.txt"));
@@ -21,13 +25,19 @@ public class Solution {
 		for(int test_case=1; test_case<=T;  test_case++){
 			
 			String[] nmk = br.readLine().split(" ");
-			int N = Integer.parseInt(nmk[0]);
+			N = Integer.parseInt(nmk[0]);
 			M = Integer.parseInt(nmk[1]);
 			int K = Integer.parseInt(nmk[2]);
 			
 			nlist = new ArrayList<>();
 			for(int i=0; i<=N; i++){
 				nlist.add(new ArrayList<Node>());
+			}
+			ellyList = new ArrayList<>();
+			noahList = new ArrayList<>();
+			for(int i=0; i<=M; i++){
+				ellyList.add(new ArrayList<Trip>());
+				noahList.add(new ArrayList<Trip>());
 			}
 			for(int i=0; i<K; i++){
 				String[] split = br.readLine().split(" ");
@@ -36,57 +46,67 @@ public class Solution {
 				double pos = Double.parseDouble(split[2]);
 				nlist.get(from).add(new Node(from, to, pos));
 			}
-			double[][] mdy = new double[M+2][N+1];
-			double[][] wdy = new double[M+2][N+1];
+			elly = new double[M+2][N+2];
+			noah = new double[M+2][N+2];
 			
-			bfs(mdy, 1);
-			bfs(wdy, N);
+			bfs(elly, ellyList, 1);
+			bfs(noah, noahList, N);
 			
 			ans = 0;
-			dfs(mdy, wdy, 1, 1);
+			dfs(1, 1);
 			
-			System.out.println(String.format("#%d %f", test_case, ans));
+			System.out.println(String.format("#%d %.3f", test_case, ans));
 		}
 		
 	}
 	
-	private static void dfs(double[][] mdy, double[][] wdy, int day, int num){
-		if(day>M){
-			return;
-		}
-		if(mdy[day][num]>0d && wdy[day][num]>0d){
-			ans += (mdy[day][num] * wdy[day][num]);
-			return;
-		}
-		for(Node n : nlist.get(num)){
-			dfs(mdy, wdy, day+1, n.next);
-		}
-	}
 	
-	private static void bfs(double[][] dy, int num){
-		Queue<Trip> q = new LinkedList<Trip>();
-		q.offer(new Trip(num, 1));
-		dy[1][num] = 1d;
+	private static void bfs(double[][] arr, ArrayList<ArrayList<Trip>> list, int city){
+		LinkedList<Trip> q = new LinkedList<Trip>();
+		q.offer(new Trip(1, city, 1d));
+		list.get(1).add(new Trip(1, city, 1d));
+		arr[1][city] = 1d;
 		while(!q.isEmpty()){
 			Trip poll = q.poll();
 			if(poll.day>M){
 				break;
 			}
-			for(Node node : nlist.get(poll.num)){
-				dy[poll.day+1][node.next] = dy[poll.day][poll.num] * node.pos;
-				q.offer(new Trip(node.next, poll.day+1));
+			for(Node node : nlist.get(poll.city)){				
+				q.offer(new Trip(poll.day+1, node.next, poll.chance * node.pos));
+				arr[poll.day+1][node.next] = arr[poll.day+1][node.next] + arr[poll.day][poll.city] * node.pos;
+				list.get(1).add(new Trip(poll.day+1, node.next, poll.chance*node.pos));
 			}
 		}
 	}
+	
+	private static void dfs(int day, int city){
+		if(day>M){
+			return;
+		}
+		
+		if(elly[day][city]>0 && noah[day][city]>0){
+			double m = (elly[day][city] * noah[day][city]);
+			ans += m;
+//			return;
+		}
+		
+		for(Node m : nlist.get(city)){
+			dfs(day+1, m.next);
+		}
+	}
+	
 		
 }
 class Trip{
-	int num;
 	int day;
-	public Trip(int num, int day) {
-		this.num = num;
+	int city;
+	double chance;
+	public Trip(int day, int city, double chance) {
 		this.day = day;
+		this.city = city;
+		this.chance = chance;
 	}
+	
 }
 
 class Node{
