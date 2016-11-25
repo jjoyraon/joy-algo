@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class source {
 	
 	private static ArrayList<ArrayList<Integer>> nlist;
-	private static int[] dep;
+	private static int[] depth;
 	private static int[][] parent; // i의 2의 j 승번째 위의 부모 
 
 	public static void main(String[] args) throws Exception {
@@ -24,7 +24,7 @@ public class source {
 		int A = Integer.parseInt(ab[0]);
 		int B = Integer.parseInt(ab[1]);
 		
-		dep = new int[N+1];
+		depth = new int[N+1];
 		nlist = new ArrayList<ArrayList<Integer>>();
 		parent = new int[N+1][17+1];
 		for(int i=0; i<=N; i++){
@@ -50,7 +50,7 @@ public class source {
 		if(lca==0){
 			System.out.println("-1");
 		}else{
-			int res = dep[A] + dep[B] - (dep[lca]*2);
+			int res = depth[A] + depth[B] - (depth[lca]*2);
 			System.out.println(res);
 		}
 		
@@ -60,9 +60,9 @@ public class source {
 	private static int lca(int a, int b){
 		int up = 0;
 		int stay = 0;
-		if(dep[a]!=dep[b]){
+		if(depth[a]!=depth[b]){
 			
-			if(dep[a]>dep[b]){
+			if(depth[a]>depth[b]){
 				up = b;
 				stay = a;
 			}else{
@@ -70,7 +70,7 @@ public class source {
 				stay = b;
 			}
 			for(int i=17; i>=0; i--){
-				if(dep[stay] - (i<<1) > dep[up]){
+				if(depth[stay] - (i<<1) > depth[up]){
 					up = parent[up][i];
 				}
 			}
@@ -95,7 +95,7 @@ public class source {
 			if(parent[num][0]!=0){
 				continue;
 			}
-			dep[num] = dep[n] + 1;
+			depth[num] = depth[n] + 1;
 			parent[num][0] = n;
 			dfs(num);
 		}

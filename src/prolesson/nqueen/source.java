@@ -8,19 +8,50 @@ import java.util.Scanner;
  * http://koitp.org/problem/NQUEEN/read/
  */
 public class source {
-
-	public static void main(String[] args) throws Exception {
-		System.setIn(new FileInputStream("src/prolesson/pinary/input.txt"));
-		Scanner sc = new Scanner(System.in);
-		
-		int N = sc.nextInt();
-		
-		long[] dy = new long[N+1];
-		dy[0] = 0;
-		dy[1] = 1;
-		for(int i=2; i<=N; i++){
-			dy[i] = dy[i-1] + dy[i-2];
-		}
-		System.out.println(String.format("%d", dy[N]));
-	}
+ 
+    private static int N;
+    private static int ANS;
+    private static int[] V;
+    private static int[] VL;
+    private static int[] VR;
+ 
+    public static void main(String[] args) throws Exception {
+ 
+        //System.setIn(new FileInputStream("src/nqueen/input.txt"));
+        Scanner sc = new Scanner(System.in);
+        N = sc.nextInt();
+        V = new int[N];
+        VL = new int[150];
+        VR = new int[150];
+        ANS = 0;
+         
+        func(0);
+         
+        System.out.println(ANS);
+        sc.close();
+    }
+ 
+    private static void func(int n) {
+        if(n==N){
+            ANS++;
+            return;
+        }
+        for(int j=0; j<N; j++){
+//          if(n==j) continue;
+            if(V[j] != 0) continue;
+            if(VL[N+ n-j] != 0) continue;
+            if(VR[n+j] != 0) continue;
+            V[j] = 1;
+            VL[N+ n-j] = 1;
+            VR[n+j] = 1;
+            func(n+1);
+            V[j] = 0;
+            VL[N+ n-j] = 0;
+            VR[n+j] = 0;
+        }
+         
+         
+    }
+ 
+ 
 }

@@ -44,11 +44,11 @@ public class source {
 			Num num = numArr[i];
 			int prevMax = select(1, num.index-1);
 			update(num.index, prevMax + 1);
-			if(pi>0 && path[pi-1]!=num.num){
-				path[pi++] = num.num;
-			}else if(pi==0){
-				path[pi++] = num.num;
-			}
+//			if(pi>0 && path[pi-1]!=num.num){
+//				path[pi++] = num.num;
+//			}else if(pi==0){
+//				path[pi++] = num.num;
+//			}
 			max = Math.max(max, prevMax + 1);
 		}
 		System.out.println(String.format("%d", max));
