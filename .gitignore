@@ -8,3 +8,9 @@ target/
 
 # Eclipse project files
 .settings/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr

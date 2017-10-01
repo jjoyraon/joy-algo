@@ -1,0 +1,21 @@
+{
+  "name": "joy-algo",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "jslib"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uratang/joy-algo.git"
+  },
+  "author": "jjoyraon",
+  "bugs": {
+    "url": "https://github.com/uratang/joy-algo/issues"
+  },
+  "homepage": "https://github.com/uratang/joy-algo#readme"
+}
