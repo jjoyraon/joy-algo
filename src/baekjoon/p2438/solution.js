@@ -1,3 +1,4 @@
+//https://www.acmicpc.net/problem/2438
 var num = require('fs').readFileSync('/dev/stdin').toString();
 
 for(var i=1; i<=num; i++){

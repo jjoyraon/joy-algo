@@ -1,3 +1,4 @@
+// https://www.acmicpc.net/problem/1193
 var num = require('fs').readFileSync('/dev/stdin').toString();
 
 var size = 1;
@@ -14,7 +15,7 @@ var upValue = num - edge;
 var downValue = num - edge;
 
 if(size % 2 == 1){
-  upValue = size - upValue + 1;
+      upValue = size - upValue + 1;
 }
 if(size % 2 == 0){
   downValue = size - downValue + 1;
